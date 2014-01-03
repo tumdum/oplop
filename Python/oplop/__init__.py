@@ -1,20 +1,14 @@
-try:
-    from hashlib import md5
-except ImportError:
-    from md5 import md5
+import scrypt
 import base64
 import re
 
 
-_length = 8
+_length = 10
 
 
 def _raw_hash(label, password):
     """Generate a unique hash from a label and master password."""
-    hash_object = md5()
-    hash_object.update(password)
-    hash_object.update(label)
-    return base64.urlsafe_b64encode(hash_object.digest())
+    return base64.urlsafe_b64encode(scrypt.hash(password, label))
 
 
 def create(label, master):
